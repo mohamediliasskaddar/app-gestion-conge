@@ -1,0 +1,13 @@
+
+.section-title {
+  color: #1e293b;              
+  font-size: 1.75rem;         
+  font-weight: 600;           
+  margin: 2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e7eb; 
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

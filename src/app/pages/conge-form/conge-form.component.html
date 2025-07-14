@@ -1,0 +1,109 @@
+
+ <!-- operateurs ,  cadres , ETAM  -->
+  <h2 class="section-title">Demande de congé</h2>
+
+
+  <div *ngIf="successMessage" class="success-message">
+  {{ successMessage }}
+</div>
+
+<!-- Message d'erreur -->
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+
+  <form [formGroup]="congeForm" (ngSubmit)="onSubmit()">
+
+  <!-- Row 1 -->
+  <div class="input-row">
+    <div class="form-group">
+      <label>Nom :</label>
+      <input formControlName="nom" />
+      <div *ngIf="congeForm.get('nom')?.touched && congeForm.get('nom')?.invalid">
+        Nom requis.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>CNI :</label>
+      <input formControlName="cni" />
+      <div *ngIf="congeForm.get('cni')?.touched && congeForm.get('cni')?.invalid">
+        CNI requis.
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 2 -->
+  <div class="input-row">
+    <div class="form-group">
+      <label>Email :</label>
+      <input formControlName="email" />
+      <div *ngIf="congeForm.get('email')?.touched && congeForm.get('email')?.invalid">
+        Email invalide.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Département :</label>
+      <input formControlName="departement" />
+    </div>
+  </div>
+
+  <!-- Row 3 -->
+  <div class="input-row">
+    <div class="form-group">
+      <label>Rôle :</label>
+      <select formControlName="role">
+        <option value="Opérateur">Opérateur</option>
+        <option value="Cadre">Chef de département</option>
+        <option value="ETAM">sécurité</option>
+        <!-- <option value="Chauffeur de navette">Chauffeur de navette</option> -->
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Motif :</label>
+      <input formControlName="type" placeholder="Annuel, Exceptionnel..." />
+    </div>
+  </div>
+
+  <!-- Row 4 -->
+  <div class="input-row">
+    <div class="form-group">
+      <label>Date Début :</label>
+      <input type="date" formControlName="dateDebut" />
+    </div>
+
+    <div class="form-group">
+      <label>Date Fin :</label>
+      <input type="date" formControlName="dateFin" />
+    </div>
+  </div>
+
+  <!-- Row 5 -->
+  <div class="input-row">
+    <div class="form-group">
+      <label>Nb Jours :</label>
+      <input formControlName="nbJours" />
+    </div>
+
+    <div class="form-group">
+      <label>Statut :</label>
+      <select formControlName="statut">
+        <option value="En attente">En attente</option>
+        <option value="Approuvé">Approuvé</option>
+        <option value="Refusé">Refusé</option>
+        <option value="Annulé">Annulé</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Commentaire full width -->
+  <div class="form-group">
+    <label>Commentaire / autres :</label>
+    <textarea formControlName="commentaire"></textarea>
+    
+  </div>
+
+  <button type="submit">Enregistrer</button>
+</form>

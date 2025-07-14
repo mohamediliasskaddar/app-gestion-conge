@@ -1,0 +1,7 @@
+
+<div class="sidebar">
+  <button (click)="navigate('/dashboard/conge-form')" [class.active]="isActive('/dashboard/conge-form')">Demande de congé </button>
+  <button (click)="navigate('/dashboard/conge-table')" [class.active]="isActive('/dashboard/conge-table')">Tableau des demandes</button>
+  <button (click)="navigate('/dashboard/conge-details')" [class.active]="isActive('/dashboard/conge-details')">Détails des demandes </button>
+  <button (click)="navigate('/dashboard/conge-calendar')" [class.active]="isActive('/dashboard/conge-calendar')">Calendriers des demandes</button>
+</div>

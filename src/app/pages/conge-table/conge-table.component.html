@@ -1,0 +1,58 @@
+
+   <h2 class="section-title">Tableau des demandes de congé</h2>
+<div class="filters">
+  <label>
+    Rôle :
+    <select (change)="onRoleChange($any($event.target).value)">
+      <option value="">Tous</option>
+      <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+    </select>
+  </label>
+
+  <label>
+    Statut :
+    <select (change)="onStatutChange($any($event.target).value)">
+      <option value="">Tous</option>
+      <option *ngFor="let s of statuts" [value]="s">{{ s }}</option>
+    </select>
+  </label>
+</div>
+
+<!-- Tableau -->
+<div *ngIf="loading">Chargement...</div>
+<div *ngIf="errorMsg">{{ errorMsg }}</div>
+
+<table *ngIf="!loading && !errorMsg">
+  <thead>
+    <tr>
+      <th>Nom</th><th>CNI</th><th>Département</th><th>Rôle</th>
+      <th>Type</th><th>Période</th><th>Jours</th><th>Statut</th><th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let c of filteredConges">
+      <td>{{ c.nom }}</td>
+      <td>{{ c.cni }}</td>
+      <td>{{ c.departement }}</td>
+      <td>{{ c.role }}</td>
+      <td>{{ c.type }}</td>
+      <td>{{ c.dateDebut | date:'yyyy-MM-dd' }} → {{ c.dateFin | date:'yyyy-MM-dd' }}</td>
+      <td>{{ c.nbJours }}</td>
+      <td>{{ c.statut }}</td>
+      <td>
+        <button (click)="onViewDetails(c)">Détails</button>
+        <button (click)="onEdit(c)">Modifier</button>
+        <button (click)="onDelete(c.id)">Supprimer</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Détails et édition -->
+<app-conge-details *ngIf="selectedConge" [conge]="selectedConge" (close)="onCloseDetails()"></app-conge-details>
+<app-conge-edit    *ngIf="editingConge" [conge]="editingConge" (saved)="onSaved($event)" (cancelled)="editingConge = undefined"></app-conge-edit>
+
+
+
+
+

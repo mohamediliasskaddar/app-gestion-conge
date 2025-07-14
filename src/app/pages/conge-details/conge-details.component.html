@@ -1,0 +1,51 @@
+  <h2 class="section-title">Détails des demandes de congé</h2>
+
+<div class="details-card">
+
+
+  <div class="selectPart">
+    <div *ngIf="!conge">
+      <label for="selectConge">Choisir une demande :</label>
+      <select id="selectConge" (change)="onSelectChange($event)">
+        <option value="" disabled selected>-- Sélectionnez --</option>
+        <option *ngFor="let c of allConges" [value]="c.id">
+          {{ c.nom }} ({{ c.type }}) – {{ c.dateDebut | date:'dd/MM/yyyy' }}
+        </option>
+      </select>
+    </div>
+</div>
+  
+  <div *ngIf="currentConge" class="details-info">
+    <h2>Détails de la demande</h2>
+    <ul>
+      <li><strong>Nom :</strong> {{ currentConge.nom }}</li>
+      <li><strong>CNI :</strong> {{ currentConge.cni }}</li>
+      <li><strong>Email :</strong> {{ currentConge.email || '—' }}</li>
+      <li><strong>Département :</strong> {{ currentConge.departement }}</li>
+      <li><strong>Rôle :</strong> {{ currentConge.role }}</li>
+      <li><strong>Type :</strong> {{ currentConge.type }}</li>
+      <li><strong>Date début :</strong> {{ currentConge.dateDebut | date:'dd/MM/yyyy' }}</li>
+      <li><strong>Date fin :</strong> {{ currentConge.dateFin | date:'dd/MM/yyyy' }}</li>
+      <li><strong>Nombre de jours :</strong> {{ currentConge.nbJours }}</li>
+      <li><strong>Commentaire :</strong> {{ currentConge.commentaire || '—' }}</li>
+      <li>
+        <strong>Statut :</strong>
+        <span [ngClass]="{
+          'status-approved': currentConge.statut === 'Approuvé',
+          'status-pending': currentConge.statut === 'En attente',
+          'status-refused': currentConge.statut === 'Refusé',
+          'status-cancelled': currentConge.statut === 'Annulé'
+        }">{{ currentConge.statut }}</span>
+      </li>
+    </ul>
+
+    
+    <button
+      *ngIf="currentConge.statut === 'Approuvé'"
+      class="btn-export"
+      (click)="exportPdf()"
+    >
+      Exporter en PDF
+    </button>
+  </div>
+</div>

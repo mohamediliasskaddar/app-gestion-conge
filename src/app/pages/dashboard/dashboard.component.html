@@ -1,0 +1,15 @@
+<p>dashboard works!</p>
+
+
+<div >
+    <app-header></app-header>
+    <app-sidebar (sectionSelected)="onSectionSelected($event)" ></app-sidebar>
+    <div class="dashboard content ">
+        
+        <app-conge-form *ngIf="selectedSection === 'conge-form'"></app-conge-form>
+        <app-conge-table *ngIf="selectedSection === 'conge-table'"></app-conge-table>
+        <app-conge-calendar *ngIf="selectedSection === 'conge-calendar'"></app-conge-calendar>
+        <app-conge-details *ngIf="selectedSection === 'conge-details'"></app-conge-details>
+
+    </div>
+</div>

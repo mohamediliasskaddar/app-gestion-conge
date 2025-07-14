@@ -1,0 +1,79 @@
+
+<form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="edit-card">
+  <h3>Modifier la demande de congé</h3>
+
+  <div class="input-row">
+    <div class="form-group">
+      <label>Nom</label>
+      <input formControlName="nom" />
+    </div>
+    <div class="form-group">
+      <label>CNI</label>
+      <input formControlName="cni" />
+    </div>
+  </div>
+
+  <div class="input-row">
+    <div class="form-group">
+      <label>Email</label>
+      <input formControlName="email" />
+    </div>
+    <div class="form-group">
+      <label>Département</label>
+      <input formControlName="departement" />
+    </div>
+  </div>
+
+  <div class="input-row">
+    <div class="form-group">
+      <label>Rôle</label>
+      <select formControlName="role">
+        <option value="Opérateur">Opérateur</option>
+        <option value="Chef de département">Chef de département</option>
+        <option value="sécurité">sécurité</option>
+        <option value="Chauffeur de navette">Chauffeur de navette</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Type de congé</label>
+      <input formControlName="type" />
+    </div>
+  </div>
+
+  <div class="input-row">
+    <div class="form-group">
+      <label>Date début</label>
+      <input type="date" formControlName="dateDebut" />
+    </div>
+    <div class="form-group">
+      <label>Date fin</label>
+      <input type="date" formControlName="dateFin" />
+    </div>
+  </div>
+
+  <div class="input-row">
+    <div class="form-group">
+      <label>Nb Jours</label>
+      <input formControlName="nbJours" />
+    </div>
+    <div class="form-group">
+      <label>Statut</label>
+      <select formControlName="statut">
+        <option value="En attente">En attente</option>
+        <option value="Approuvé">Approuvé</option>
+        <option value="Refusé">Refusé</option>
+        <option value="Annulé">Annulé</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Commentaire</label>
+    <textarea formControlName="commentaire"></textarea>
+  </div>
+
+  <div class="buttons">
+    <button type="submit" [disabled]="editForm.invalid">Enregistrer</button>
+    <button type="button" (click)="onCancel()">Annuler</button>
+  </div>
+</form>
