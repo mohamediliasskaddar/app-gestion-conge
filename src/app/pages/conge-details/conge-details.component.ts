@@ -5,6 +5,7 @@ import { CongeService } from '../../services/conge.service';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import autoTable from 'jspdf-autotable';
+import { EmailService } from '../../services/email.service';
 
 @Component({
   selector: 'app-conge-details',
@@ -15,22 +16,17 @@ import autoTable from 'jspdf-autotable';
   providers: [CongeService]
 })
 export class CongeDetailsComponent implements OnInit {
-  /** Optionnel : si le parent passe déjà un conge */
   @Input() conge?: Conge;
 
-  /** Liste complète pour la dropdown */
   allConges: Conge[] = [];
 
-  /** Conge sélectionné par le dropdown (si `@Input` non défini) */
   selectedConge?: Conge;
 
-  constructor(private congeService: CongeService) {}
+  constructor(private congeService: CongeService, private emailService: EmailService) {}
 
   ngOnInit(): void {
-    // Si aucun conge en input, on charge la liste pour alimenter la dropdown
      if (!this.conge) {
     this.congeService.getConges().subscribe(list => {
-      // Pour chaque congé, on convertit dateDebut/dateFin en JS Date
       this.allConges = list.map(c => ({
         ...c,
         dateDebut: (c.dateDebut as any).toDate ? (c.dateDebut as any).toDate() : new Date(c.dateDebut),
@@ -40,7 +36,6 @@ export class CongeDetailsComponent implements OnInit {
   }
 }
 
-  /** Méthode appelée quand on choisit un congé dans la dropdown */
   onSelectChange(event: Event) {
   const select = event.target as HTMLSelectElement;
   const id = select.value;
@@ -52,42 +47,93 @@ export class CongeDetailsComponent implements OnInit {
 }
 
 
-  /** Retourne le congé effectivement à afficher */
   get currentConge(): Conge | undefined {
     // si @Input fourni, priorité
     return this.conge ?? this.selectedConge;
   }
 
-  /** Génère le PDF si le congé est approuvé */
   exportPdf() {
-    const c = this.currentConge!;
-    const doc = new jsPDF();
+  const c = this.currentConge!;
+  const doc = new jsPDF();
+
+  const img = new Image();
+  img.src = 'assets/logo.png'; 
+
+  img.onload = () => {
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const imgWidth = 45; 
+    const imgHeight = 15; 
+    const x = (pageWidth - imgWidth) / 2; 
+    const y = 20; 
+
+    doc.addImage(img, 'PNG', x, y, imgWidth, imgHeight);
+
+    const contentStartY = y + imgHeight + 10; 
+
     doc.setFontSize(16);
-    doc.text(`Demande de congé - ${c.nom}`, 14, 20);
+    doc.text(`Demande de congé - ${c.nom}`, 14, contentStartY);
 
-    // Préparer les lignes
-    const rows = [
-      ['Nom', c.nom],
-      ['CNI', c.cni],
-      ['Email', c.email || '—'],
-      ['Département', c.departement],
-      ['Rôle', c.role],
-      ['Type', c.type],
-      ['Date début', new Date(c.dateDebut).toLocaleDateString()],
-      ['Date fin', new Date(c.dateFin).toLocaleDateString()],
-      ['Nb jours', c.nbJours.toString()],
-      ['Commentaire', c.commentaire || '—'],
-      ['Statut', c.statut]
-    ];
+    doc.setFontSize(12);
+    const message = `Suite à votre demande de congé et après traitement par notre service, nous vous informons que votre congé est bien accepté selon les informations citées dans le tableau suivant.`;
+    const signature = `Signature : _____________________`;
 
-    // Appeler autoTable
+    doc.text(message, 14, contentStartY + 10, { maxWidth: 180 });
+
     autoTable(doc, {
-      startY: 30,
+      startY: contentStartY + 30,
       head: [['Champ', 'Valeur']],
-      body: rows
+      body: [
+        ['Nom', c.nom],
+        ['matricule', c.matricule],
+        ['Email', c.email || '—'],
+        ['Département', c.departement],
+        ['Rôle', c.role],
+        ['Motif', c.motif],
+        ['Date début', new Date(c.dateDebut).toLocaleDateString()],
+        ['Date fin', new Date(c.dateFin).toLocaleDateString()],
+        ['Nb jours', c.nbJours.toString()],
+        ['Commentaire', c.commentaire || '—'],
+        ['Statut', c.statut]
+      ]
     });
 
-    doc.save(`conge_${c.id}.pdf`);
+    const finalY = (doc as any).lastAutoTable.finalY + 10;
+    doc.text(signature, 14, finalY);
+
+    
+    doc.save(`conge_${c.nom}_${c.matricule}.pdf`);
+  };
+}
+//send a mail
+envoyerEmail() {
+  const c = this.currentConge;
+  if (!c) {
+    alert('Aucun congé sélectionné.');
+    return;
   }
+   if (!c || !c.email) {
+    alert('Adresse email introuvable, impossible d’envoyer le mail.');
+    return;
+  }
+ 
+  const dateDebutStr = new Date(c.dateDebut).toLocaleDateString('fr-FR');
+  const dateFinStr   = new Date(c.dateFin).toLocaleDateString('fr-FR');
+
+  this.emailService.sendApprovalEmail(
+    c.email!,     // non-null car obligatoire si tu affiches le bouton
+    c.nom,
+    dateDebutStr,
+    dateFinStr
+  )
+  .then(() => {
+    console.log('Email envoyé avec succès ✅');
+    alert("Email envoyé avec succès !");
+  })
+  .catch(err => {
+    console.error('Erreur lors de l\'envoi de l\'email ❌', err);
+    alert("Erreur lors de l'envoi de l'email.");
+  });
 }
 
+
+}

@@ -7,7 +7,7 @@ import { Conge } from './types';
 const seedData = [
 //   {
 //     nom: "Salma GHARBIA",
-//     cni: "OP100001",
+//     matricule: "OP100001",
 //     email: "salma.gharbia@entreprise.com",
 //     departement: "HSEEn",
 //     role: "Opérateur",
@@ -23,7 +23,7 @@ const seedData = [
 //   },
 //   {
 //     nom: "Karim ZARGHOUNI",
-//     cni: "CA100002",
+//     matricule: "CA100002",
 //     email: "karim.zarghouni@entreprise.com",
 //     departement: "IT",
 //     role: "Cadre",
@@ -39,7 +39,7 @@ const seedData = [
 //   },
   {
     nom: "Leila BEN FREDJ",
-    cni: "ET100003",
+    matricule: "ET100003",
     email: "leila.benfredj@entreprise.com",
     departement: "Industrielle",
     role: "ETAM",
@@ -55,7 +55,7 @@ const seedData = [
   },
   {
     nom: "Omar TRIKI",
-    cni: "OP100004",
+    matricule: "OP100004",
     email: "omar.triki@entreprise.com",
     departement: "Qualité",
     role: "Opérateur",
@@ -71,7 +71,7 @@ const seedData = [
   },
   {
     nom: "Sana MESSAOUDI",
-    cni: "CA100005",
+    matricule: "CA100005",
     email: "sana.messaoudi@entreprise.com",
     departement: "Logistique",
     role: "Cadre",
@@ -87,7 +87,7 @@ const seedData = [
   },
   {
     nom: "Hichem BELHASSEN",
-    cni: "ET100006",
+    matricule: "ET100006",
     email: "hichem.belhassen@entreprise.com",
     departement: "OEE",
     role: "ETAM",
@@ -103,7 +103,7 @@ const seedData = [
   },
   {
     nom: "Ines SAHLI",
-    cni: "OP100007",
+    matricule: "OP100007",
     email: "ines.sahli@entreprise.com",
     departement: "Maintenance",
     role: "Opérateur",
@@ -119,7 +119,7 @@ const seedData = [
   },
   {
     nom: "Sofien JABALLAH",
-    cni: "CA100008",
+    matricule: "CA100008",
     email: "sofien.jaballah@entreprise.com",
     departement: "IT",
     role: "Cadre",
@@ -135,7 +135,7 @@ const seedData = [
   },
   {
     nom: "Wiem KALLEL",
-    cni: "ET100009",
+    matricule: "ET100009",
     email: "wiem.kallel@entreprise.com",
     departement: "Logistique",
     role: "ETAM",
@@ -156,11 +156,11 @@ export function seedConges(congeService: CongeService) {
   seedData.forEach(item => {
     const newConge: Conge = {
       nom: item.nom,
-      cni: item.cni,
+      matricule: item.matricule,
       email: item.email || '',
       departement: item.departement,
       role:'Opérateur',
-      type: item.type,
+      motif: item.type,
       dateDebut: item.dateDebut instanceof Timestamp ? item.dateDebut.toDate() : new Date(item.dateDebut),
       dateFin: item.dateFin instanceof Timestamp ? item.dateFin.toDate() : new Date(item.dateFin),
       nbJours: item.nbJours,

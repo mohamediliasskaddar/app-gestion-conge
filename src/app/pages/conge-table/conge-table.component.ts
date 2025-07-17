@@ -5,6 +5,9 @@ import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { Timestamp } from 'firebase/firestore';
 import { CongeDetailsComponent } from "../conge-details/conge-details.component";
 import { CongeEditComponent } from "../conge-edit/conge-edit.component";
+import * as XLSX from 'xlsx';
+import { saveAs} from 'file-saver';
+// import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-conge-table',
@@ -18,11 +21,9 @@ export class CongeTableComponent implements OnInit {
   conges: Conge[] = [];
   filteredConges: Conge[] = [];
 
-  
   loading = true;
   errorMsg = '';
 
-  
   roles = ['Opérateur', 'Cadre', 'ENAM'];
   statuts = ['En attente', 'Approuvé', 'Refusé', 'Annulé'];
   selectedRole = '';
@@ -53,7 +54,6 @@ export class CongeTableComponent implements OnInit {
       }
     });
   }
-
   
   applyFilters() {
     this.filteredConges = this.conges.filter(c => {
@@ -62,7 +62,6 @@ export class CongeTableComponent implements OnInit {
       return byRole && byStatut;
     });
   }
-
   
   onRoleChange(role: string) {
     this.selectedRole = role;
@@ -73,7 +72,6 @@ export class CongeTableComponent implements OnInit {
     this.applyFilters();
   }
 
-  
   onViewDetails(c: Conge) { this.selectedConge = c; }
   onCloseDetails()      { this.selectedConge = undefined; }
   onEdit(c: Conge)      { this.editingConge = c; }
@@ -83,5 +81,48 @@ export class CongeTableComponent implements OnInit {
     this.congeService.deleteConge(id)
       .then(() => this.applyFilters())
       .catch(e => alert('Erreur suppression'));
+  }
+  // exportExcel(){
+  //   alert( "not implemented yet" )
+  // }
+
+
+  exportExcel(): void {
+    
+    // 1. Préparer les données à exporter
+    const data = this.filteredConges.map(c => ({
+      Nom: c.nom,
+      Matricule: c.matricule,
+      Département: c.departement,
+      Rôle: c.role,
+      Motif: c.motif,
+      'Date début': new Date(c.dateDebut).toLocaleDateString(),
+      'Date fin':   new Date(c.dateFin).toLocaleDateString(),
+      Jours: c.nbJours,
+      Statut: c.statut
+    }));
+
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+
+    
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Congés');
+
+    const wbout: ArrayBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+
+    // fomatation de date 
+   const now = new Date();
+  const yyyy = now.getFullYear();
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const dd = String(now.getDate()).padStart(2, '0');
+  const hh = String(now.getHours()).padStart(2, '0');
+  const min = String(now.getMinutes()).padStart(2, '0');
+
+  const dateTimeStr = `${yyyy}-${mm}-${dd}_${hh}-${min}`;
+  const filename = `conges_${dateTimeStr}.xlsx`;
+
+    // Sauver le fichier Excel
+    const blob = new Blob([wbout], { type: 'application/octet-stream' });
+    saveAs(blob, filename);
   }
 }

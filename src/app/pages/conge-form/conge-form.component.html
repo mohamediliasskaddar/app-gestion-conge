@@ -25,9 +25,9 @@
     </div>
 
     <div class="form-group">
-      <label>CNI :</label>
-      <input formControlName="cni" />
-      <div *ngIf="congeForm.get('cni')?.touched && congeForm.get('cni')?.invalid">
+      <label>Matricule :</label>
+      <input formControlName="matricule" />
+      <div *ngIf="congeForm.get('matricule')?.touched && congeForm.get('matricule')?.invalid">
         CNI requis.
       </div>
     </div>
@@ -55,15 +55,15 @@
       <label>Rôle :</label>
       <select formControlName="role">
         <option value="Opérateur">Opérateur</option>
-        <option value="Cadre">Chef de département</option>
-        <option value="ETAM">sécurité</option>
+        <option value="Cadre">Cadre</option>
+        <option value="ETAM">ETAM</option>
         <!-- <option value="Chauffeur de navette">Chauffeur de navette</option> -->
       </select>
     </div>
 
     <div class="form-group">
       <label>Motif :</label>
-      <input formControlName="type" placeholder="Annuel, Exceptionnel..." />
+      <input formControlName="motif" placeholder="Annuel, Exceptionnel..." />
     </div>
   </div>
 

@@ -104,6 +104,7 @@ td button:last-child:hover {
   display: flex;
   align-items: center;
   justify-content: center;
+
 }
 .filters {
   display: flex;
@@ -129,4 +130,21 @@ td button:last-child:hover {
   font-size: 1rem;
   background: white;
   color: #111827;
+}
+.btn-excel{
+  margin-top: 50px;
+  border:  solde #059669 ;
+  background-color: #059669;
+  padding: 10px;
+  border-radius: 10px;
+
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.btn-excel:hover {
+  background: #0f5a42;
+  color: gray;
 }

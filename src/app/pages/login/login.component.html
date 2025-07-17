@@ -1,19 +1,24 @@
 <div class="login-container">
-  
   <form (ngSubmit)="login()">
     <div class="logo">
-    <img src="assets/logo.png" alt="Logo" />
-    <img src="assets/logo_totalenergies.png" alt="Logo" />
-  </div>
-  <h2>Login</h2>
+      <img src="assets/logo.png" alt="Logo" />
+      <img src="assets/logo_totalenergies.png" alt="Logo" />
+    </div>
+    <h2>Login RH</h2>
 
     <div>
-      <label for="username">Username:</label>
-      <input id="username" [(ngModel)]="username" name="username" required />
+      <label for="email">Email :</label>
+      <input
+        id="email"
+        type="email"
+        [(ngModel)]="email"
+        name="email"
+        required
+      />
     </div>
 
     <div>
-      <label for="password">Password:</label>
+      <label for="password">Mot de passe :</label>
       <input
         id="password"
         type="password"
@@ -27,6 +32,7 @@
       {{ errorMessage }}
     </div>
 
-    <button type="submit">Login</button>
+    <button type="submit">Se connecter</button>
+    <button type="button" (click)="userDemande()">Demander un congé</button>
   </form>
 </div>

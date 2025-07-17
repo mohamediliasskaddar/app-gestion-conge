@@ -42,7 +42,7 @@ export class CongeCalendarComponent {
       : new Date(c.dateFin);
 
     return {
-      title: `${c.nom} (${c.type})`,
+      title: `${c.nom} (${c.motif})`,
       start,
       end,
       allDay: true,
@@ -70,7 +70,7 @@ export class CongeCalendarComponent {
 
   alert(
     `Détails du congé de ${c.nom}\n\n` +
-    `Type : ${c.type}\n` +
+    `Type : ${c.motif}\n` +
     `Période : ${formattedStart} → ${formattedEnd}\n` +
     `Statut : ${c.statut}`
   );

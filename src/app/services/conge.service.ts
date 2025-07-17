@@ -58,16 +58,16 @@ export class CongeService {
   }
 
   // Optionnel : déclencher un envoi d'e-mail
-  sendEmailNotification(conge: Conge): Promise<void> {
-    // Appel à une Cloud Function HTTP
-    return fetch('https://us-central1-TA_PROJ.cloudfunctions.net/sendEmail', {
-      method: 'POST',
-      body: JSON.stringify(conge),
-      headers: { 'Content-Type': 'application/json' }
-    }).then(res => {
-      if (!res.ok) {
-        throw new Error('Erreur lors de l\'envoi du mail');
-      }
-    });
-  }
+  // sendEmailNotification(conge: Conge): Promise<void> {
+  //   // Appel à une Cloud Function HTTP
+  //   return fetch('https://us-central1-TA_PROJ.cloudfunctions.net/sendEmail', {
+  //     method: 'POST',
+  //     body: JSON.stringify(conge),
+  //     headers: { 'Content-Type': 'application/json' }
+  //   }).then(res => {
+  //     if (!res.ok) {
+  //       throw new Error('Erreur lors de l\'envoi du mail');
+  //     }
+  //   });
+  // }
 }

@@ -30,11 +30,11 @@ export class CongeEditComponent implements OnInit {
     // Crée le form et patch avec la conge reçue
     this.editForm = this.fb.group({
       nom: [this.conge.nom, Validators.required],
-      cni: [this.conge.cni, Validators.required],
+      matricule: [this.conge.matricule, Validators.required],
       email: [this.conge.email, Validators.email],
       departement: [this.conge.departement, Validators.required],
       role: [this.conge.role, Validators.required],
-      type: [this.conge.type, Validators.required],
+      type: [this.conge.motif, Validators.required],
       dateDebut: [this.formatInputDate(this.conge.dateDebut), Validators.required],
       dateFin: [this.formatInputDate(this.conge.dateFin), Validators.required],
       nbJours: [{ value: this.conge.nbJours, disabled: true }, Validators.required],
@@ -76,11 +76,11 @@ export class CongeEditComponent implements OnInit {
     const updated: Conge = {
       ...this.conge,
       nom: v.nom,
-      cni: v.cni,
+      matricule: v.matricule,
       email: v.email,
       departement: v.departement,
       role: v.role,
-      type: v.type,
+      motif: v.motif,
       dateDebut: new Date(v.dateDebut),
       dateFin:   new Date(v.dateFin),
       nbJours:   v.nbJours,

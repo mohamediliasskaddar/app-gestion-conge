@@ -16,6 +16,10 @@
       <option *ngFor="let s of statuts" [value]="s">{{ s }}</option>
     </select>
   </label>
+  
+  <button class="btn-excel" (click)="exportExcel()">
+    Exporter en Excel
+  </button>
 </div>
 
 <!-- Tableau -->
@@ -25,17 +29,17 @@
 <table *ngIf="!loading && !errorMsg">
   <thead>
     <tr>
-      <th>Nom</th><th>CNI</th><th>Département</th><th>Rôle</th>
-      <th>Type</th><th>Période</th><th>Jours</th><th>Statut</th><th>Actions</th>
+      <th>Nom</th><th>Matricule</th><th>Département</th><th>Rôle</th>
+      <th>Motif</th><th>Période</th><th>Jours</th><th>Statut</th><th>Actions</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let c of filteredConges">
       <td>{{ c.nom }}</td>
-      <td>{{ c.cni }}</td>
+      <td>{{ c.matricule }}</td>
       <td>{{ c.departement }}</td>
       <td>{{ c.role }}</td>
-      <td>{{ c.type }}</td>
+      <td>{{ c.motif }}</td>
       <td>{{ c.dateDebut | date:'yyyy-MM-dd' }} → {{ c.dateFin | date:'yyyy-MM-dd' }}</td>
       <td>{{ c.nbJours }}</td>
       <td>{{ c.statut }}</td>

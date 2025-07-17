@@ -1,21 +1,21 @@
-
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CongeFormComponent } from '../conge-form/conge-form.component';
+import { HeaderComponent } from '../../shared/header/header.component';
+import { CongeService } from '../../services/conge.service';
 import { Timestamp } from 'firebase/firestore';
 import { Conge } from '../../utils/types';
-import { CongeService } from '../../services/conge.service';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIf } from '@angular/common';
-import { seedConges } from '../../utils/seed-conges';// already used 
 
 @Component({
-  selector: 'app-conge-form',
-  templateUrl: './conge-form.component.html',
-  styleUrls: ['./conge-form.component.css'],
-  imports: [NgIf, FormsModule, ReactiveFormsModule,  ]
+  selector: 'app-user-form',
+  imports: [NgIf, FormsModule, ReactiveFormsModule, HeaderComponent],
+  templateUrl: './user-form.component.html',
+  styleUrl: './user-form.component.css'
 })
 
-export class CongeFormComponent implements OnInit {
-  congeForm: FormGroup;
+export class UserFormComponent implements OnInit{
+ congeForm: FormGroup;
   nbJoursCalcul: number = 0;
   successMessage: string | null = null;
   errorMessage: string | null = null;
@@ -36,7 +36,7 @@ export class CongeFormComponent implements OnInit {
       dateFin: ['', Validators.required],
       nbJours: [{ value: 0, disabled: true }, Validators.required],
       commentaire: [''],
-      statut: ['En attente', Validators.required]
+      statut: ['En attente' ,{ disabled: true}, Validators.required ]
     });
   }
 
@@ -44,7 +44,6 @@ export class CongeFormComponent implements OnInit {
     
     this.congeForm.get('dateDebut')?.valueChanges.subscribe(() => this.calculateDays());
     this.congeForm.get('dateFin')?.valueChanges.subscribe(() => this.calculateDays());
-    // seedConges(this.congeService); IUSED IT FOR INSERTING DAATA INTO THE DB 
   }
 
   calculateDays(): void {
@@ -62,7 +61,6 @@ export class CongeFormComponent implements OnInit {
   onSubmit(): void {
     if (this.congeForm.invalid) {
       this.congeForm.markAllAsTouched();
-      this.errorMessage= "Veuillez remplir tous les champs afin de valider votre demande.";
       return;
     }
 
@@ -99,4 +97,5 @@ export class CongeFormComponent implements OnInit {
 
 
 }
+
 

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -8,15 +9,16 @@ import { Router } from '@angular/router';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  constructor(private router : Router){}
+  constructor(private router : Router, private auth : AuthService){}
+
  logout() {
-    // Add your logout logic here, e.g., clear auth tokens, redirect, etc.
+    alert('Logged out!'); 
+    this.auth.logout();
     this.router.navigate(['/login']);
-    alert('Logged out!'); // example
   }
+  
 
   onButtonClick() {
-    // Your custom button logic here
     console.log('Button clicked');
     alert('Button clicked!');
   }

@@ -1,0 +1,118 @@
+<!-- <div class="ilias">
+    <app-header></app-header>
+<h2>Formulaire de demande de congé</h2>
+<h3>
+  Veuillez remplir ce formulaire en tenant compte des informations saisies avec attention.
+</h3>
+</div>
+<div class="content">
+<app-conge-form></app-conge-form>
+</div> -->
+
+
+ <!-- operateurs ,  cadres , ETAM  -->
+    <app-header></app-header>
+
+  <h2 class="section-title">Demande de congé</h2>
+
+<h3>  Veuillez remplir ce formulaire en tenant compte des informations saisies avec attention.  </h3>
+
+  <div *ngIf="successMessage" class="success-message">
+  {{ successMessage }}
+</div>
+
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+
+
+ <div>
+    <form [formGroup]="congeForm" (ngSubmit)="onSubmit()">
+
+    <div class="input-row">
+      <div class="form-group">
+        <label>Nom :</label>
+        <input formControlName="nom" />
+        <div *ngIf="congeForm.get('nom')?.touched && congeForm.get('nom')?.invalid">
+          Nom requis.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <!-- <label>CNI :</label> -->
+        <label>Matricule :</label>
+        <input formControlName="matricule" />
+        <div *ngIf="congeForm.get('matricule')?.touched && congeForm.get('matricule')?.invalid">
+          CNI requis.
+        </div>
+      </div>
+    </div>
+
+    <div class="input-row">
+      <div class="form-group">
+        <label>Email :</label>
+        <input formControlName="email" />
+        <div *ngIf="congeForm.get('email')?.touched && congeForm.get('email')?.invalid">
+          Email invalide.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Département :</label>
+        <input formControlName="departement" />
+      </div>
+    </div>
+
+    <div class="input-row">
+      <div class="form-group">
+        <label>Rôle :</label>
+        <select formControlName="role">
+          <option value="Opérateur">Opérateur</option>
+          <option value="Cadre">Cadre</option>
+          <option value="ETAM">ETAM</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Motif :</label>
+        <input formControlName="motif" placeholder="Annuel, Exceptionnel..." />
+      </div>
+    </div>
+
+    <div class="input-row">
+      <div class="form-group">
+        <label>Date Début :</label>
+        <input type="date" formControlName="dateDebut" />
+      </div>
+
+      <div class="form-group">
+        <label>Date Fin :</label>
+        <input type="date" formControlName="dateFin" />
+      </div>
+    </div>
+
+    <div class="input-row">
+      <div class="form-group">
+        <label>Nb Jours :</label>
+        <input formControlName="nbJours" />
+      </div>
+
+      <div class="form-group">
+        <label>Statut :</label>
+        <select formControlName="statut">
+          <option value="En attente">En attente</option>
+          
+        </select>
+      </div>
+    </div>
+
+    <!-- Commentaire full width -->
+    <div class="form-group">
+      <label>Commentaire / autres :</label>
+      <textarea formControlName="commentaire"></textarea>
+      
+    </div>
+
+    <button type="submit">Enregistrer</button>
+  </form>
+</div>

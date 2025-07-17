@@ -92,6 +92,7 @@ button {
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s;
+  margin: 10px;
 }
 
 button:hover {
