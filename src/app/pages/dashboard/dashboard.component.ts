@@ -11,8 +11,11 @@ import { CongeCalendarComponent } from '../conge-calendar/conge-calendar.compone
 
 @Component({
   selector: 'app-dashboard',
-  imports: [NgIf, CongeDetailsComponent, CongeTableComponent,
-     CongeFormComponent, SidebarComponent, HeaderComponent, CongeCalendarComponent],
+  imports: [NgIf, CongeTableComponent,
+    CongeFormComponent, SidebarComponent, HeaderComponent,
+    CongeDetailsComponent, CongeCalendarComponent],
+  // imports: [NgIf, CongeDetailsComponent, CongeTableComponent,
+  //    CongeFormComponent, SidebarComponent, HeaderComponent, CongeCalendarComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
