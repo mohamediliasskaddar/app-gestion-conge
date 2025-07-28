@@ -1,7 +1,11 @@
-  <h2 class="section-title">Détails des demandes de congé</h2>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+
+<h2 class="section-title">Détails des demandes de congé</h2>
 
 <div class="details-card">
-
+<!-- <button (click)="onClose()">Fermer</button> -->
+  <h3>Consulter une demande de congé</h3>
+  <button  class="btn-close" (click)="onClose()"><span class="material-symbols-outlined">tab_close_right</span></button>
 
   <div class="selectPart">
     <div *ngIf="!conge">
@@ -17,13 +21,14 @@
   
   <div *ngIf="currentConge" class="details-info">
     <h2>Détails de la demande</h2>
+
     <ul>
       <li><strong>Nom :</strong> {{ currentConge.nom }}</li>
       <li><strong>Matricule :</strong> {{ currentConge.matricule }}</li>
       <li><strong>Email :</strong> {{ currentConge.email || '—' }}</li>
       <li><strong>Département :</strong> {{ currentConge.departement }}</li>
-      <li><strong>Rôle :</strong> {{ currentConge.role }}</li>
-      <li><strong>Type :</strong> {{ currentConge.motif }}</li>
+      <li><strong>Catégorie :</strong> {{ currentConge.categorie }}</li>
+      <li><strong>Motif :</strong> {{ currentConge.motif }}</li>
       <li><strong>Date début :</strong> {{ currentConge.dateDebut | date:'dd/MM/yyyy' }}</li>
       <li><strong>Date fin :</strong> {{ currentConge.dateFin | date:'dd/MM/yyyy' }}</li>
       <li><strong>Nombre de jours :</strong> {{ currentConge.nbJours }}</li>
@@ -34,7 +39,6 @@
           'status-approved': currentConge.statut === 'Approuvé',
           'status-pending': currentConge.statut === 'En attente',
           'status-refused': currentConge.statut === 'Refusé',
-          'status-cancelled': currentConge.statut === 'Annulé'
         }">{{ currentConge.statut }}</span>
       </li>
     </ul>

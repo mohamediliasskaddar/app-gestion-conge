@@ -9,7 +9,8 @@ import {
   deleteDoc,
   CollectionReference,
   query,
-  where
+  where,
+  getDocs
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Conge } from '../utils/types';
@@ -22,9 +23,9 @@ export class CongeService {
     this.congesCollection = collection(this.firestore, 'conges');
   }
 
-  addConge(conge: Conge): Promise<void> {
+  addConge(Conge: Conge): Promise<void> {
     const data = {
-      ...conge,
+      ...Conge,
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -35,7 +36,7 @@ export class CongeService {
     return collectionData(this.congesCollection, { idField: 'id' }) as Observable<Conge[]>;
   }
 
-  updateConge(conge: Conge): Promise<void> {
+  editUpdateConge(conge: Conge): Promise<void> {
     if (!conge.id) {
       return Promise.reject('Conge ID manquant');
     }
@@ -45,6 +46,13 @@ export class CongeService {
       updatedAt: new Date()
     });
   }
+updateConge(id: string, data: Partial<Conge>): Promise<void> {
+  const ref = doc(this.firestore, `conges/${id}`);
+  return updateDoc(ref, {
+    ...data,
+    updatedAt: new Date()
+  });
+}
 
   deleteConge(id: string): Promise<void> {
     const ref = doc(this.firestore, `conges/${id}`);
@@ -57,17 +65,16 @@ export class CongeService {
     return collectionData(q, { idField: 'id' }) as Observable<Conge[]>;
   }
 
-  // Optionnel : déclencher un envoi d'e-mail
-  // sendEmailNotification(conge: Conge): Promise<void> {
-  //   // Appel à une Cloud Function HTTP
-  //   return fetch('https://us-central1-TA_PROJ.cloudfunctions.net/sendEmail', {
-  //     method: 'POST',
-  //     body: JSON.stringify(conge),
-  //     headers: { 'Content-Type': 'application/json' }
-  //   }).then(res => {
-  //     if (!res.ok) {
-  //       throw new Error('Erreur lors de l\'envoi du mail');
-  //     }
-  //   });
-  // }
+  async existsConge(nom: string, matricule: string): Promise<boolean> {
+  const congeRef = collection(this.firestore, 'conges'); 
+  const q = query(congeRef,
+    where('nom', '==', nom),
+    where('matricule', '==', matricule)
+  );
+
+  const querySnapshot = await getDocs(q);
+  return !querySnapshot.empty; // true si déjà une demande existe
+}
+
+ 
 }

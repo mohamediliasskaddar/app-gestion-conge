@@ -1,0 +1,44 @@
+<div class="user-form">
+  <h2>Créer un nouvel utilisateur</h2>
+
+  <form (ngSubmit)="createUser()">
+    <div>
+      <label>Nom :</label>
+      <input type="text" [(ngModel)]="user.nom" name="nom" required />
+    </div>
+
+    <div>
+      <label>Email :</label>
+      <input type="email" [(ngModel)]="user.email" name="email" required />
+    </div>
+
+    <div>
+      <label>Matricule :</label>
+      <input type="text" [(ngModel)]="user.matricule" name="matricule" required />
+    </div>
+
+    <div>
+      <label>Mot de passe :</label>
+      <input type="password" [(ngModel)]="user.password" name="password" required />
+    </div>
+
+    <div>
+      <label>Département :</label>
+      <input type="text" [(ngModel)]="user.departement" name="departement" required />
+    </div>
+
+    <div>
+      <label>Rôle :</label>
+      <select [(ngModel)]="user.role" name="role" required>
+        <option value="RH">RH</option>
+        <option value="IT">IT</option>
+        <option value="Directeur">Directeur</option>
+      </select>
+    </div>
+
+    <button type="submit">Créer</button>
+  </form>
+
+  <p *ngIf="success" style="color: green;">{{ success }}</p>
+  <p *ngIf="error" style="color: red;">{{ error }}</p>
+</div>

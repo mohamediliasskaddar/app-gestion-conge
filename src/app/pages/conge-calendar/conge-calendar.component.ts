@@ -70,7 +70,7 @@ export class CongeCalendarComponent {
 
   alert(
     `Détails du congé de ${c.nom}\n\n` +
-    `Type : ${c.motif}\n` +
+    `Motif : ${c.motif}\n` +
     `Période : ${formattedStart} → ${formattedEnd}\n` +
     `Statut : ${c.statut}`
   );

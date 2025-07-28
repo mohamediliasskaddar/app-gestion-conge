@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Conge } from '../../utils/types';
 import { CongeService } from '../../services/conge.service';
@@ -17,10 +17,13 @@ import { EmailService } from '../../services/email.service';
 })
 export class CongeDetailsComponent implements OnInit {
   @Input() conge?: Conge;
+  @Output() close = new EventEmitter<void>();
+ 
 
   allConges: Conge[] = [];
 
   selectedConge?: Conge;
+  
 
   constructor(private congeService: CongeService, private emailService: EmailService) {}
 
@@ -46,6 +49,10 @@ export class CongeDetailsComponent implements OnInit {
   }
 }
 
+
+onClose() {
+  this.close.emit();
+}
 
   get currentConge(): Conge | undefined {
     // si @Input fourni, priorité
@@ -87,7 +94,7 @@ export class CongeDetailsComponent implements OnInit {
         ['matricule', c.matricule],
         ['Email', c.email || '—'],
         ['Département', c.departement],
-        ['Rôle', c.role],
+        ['Rôle', c.categorie],
         ['Motif', c.motif],
         ['Date début', new Date(c.dateDebut).toLocaleDateString()],
         ['Date fin', new Date(c.dateFin).toLocaleDateString()],

@@ -8,6 +8,10 @@ import { LayoutComponent } from './pages/layout/layout.component';
 import { CongeCalendarComponent } from './pages/conge-calendar/conge-calendar.component';
 import { UserFormComponent } from './pages/user-form/user-form.component';
 import { AuthGuard } from './guards/auth.guard';
+import { NewUserComponent } from './pages/new-user/new-user.component';
+import { UserListComponent } from './pages/user-list/user-list.component';
+
+
 export const routes: Routes = [ { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   {path: 'user-form', component: UserFormComponent},
@@ -21,7 +25,9 @@ export const routes: Routes = [ { path: '', redirectTo: 'login', pathMatch: 'ful
       { path: 'conge-form', component: CongeFormComponent, canActivate: [AuthGuard] },
       { path: 'conge-table', component: CongeTableComponent, canActivate: [AuthGuard] },
       { path: 'conge-details', component: CongeDetailsComponent, canActivate: [AuthGuard] },
-      { path: 'conge-calendar', component: CongeCalendarComponent, canActivate: [AuthGuard] }
+      { path: 'conge-calendar', component: CongeCalendarComponent, canActivate: [AuthGuard] },
+      {path: 'new-user', component: NewUserComponent, canActivate: [AuthGuard] },
+      {path: 'user-list', component: UserListComponent, canActivate: [AuthGuard] } 
     ]
   },
   { path: '**', redirectTo: 'login' } ];

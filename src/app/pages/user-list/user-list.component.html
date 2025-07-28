@@ -1,0 +1,25 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+<h2 class="section-title">Liste des utilisateurs</h2>
+
+<table border="1" cellspacing="0" cellpadding="8">
+  <thead>
+    <tr>
+      <th>Nom</th>
+      <th>Email</th>
+      <th>Matricule</th>
+      <th>Département</th>
+      <th>Rôle</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users$ | async">
+      <td>{{ user.nom }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.matricule }}</td>
+      <td>{{ user.departement }}</td>
+      <td>{{ user.role }}</td>
+      <td> <button (click)="deleteUser(user.id!)"><span class="material-symbols-outlined">delete</span></button>  </td>
+    </tr>
+  </tbody>
+</table>

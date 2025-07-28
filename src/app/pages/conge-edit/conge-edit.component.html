@@ -1,8 +1,10 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 
 <form [formGroup]="editForm" (ngSubmit)="onSubmit()" class="edit-card">
-  <h3>Modifier la demande de congé</h3>
 
-  <div class="input-row">
+  <h3>Modifier la demande de congé</h3>
+  <button  class="btn-close" (click)="onClose()"><span class="material-symbols-outlined">tab_close_right</span></button>
+
     <div class="form-group">
       <label>Nom</label>
       <input formControlName="nom" />
@@ -10,37 +12,43 @@
     <div class="form-group">
       <label>Matricule</label>
       <input formControlName="matricule" />
-    </div>
-  </div>
+      <div *ngIf="editForm.get('matricule')?.touched && editForm.get('matricule')?.errors?.['pattern']">
+        Le matricule doit contenir exactement 4 chiffres.
+      </div>
 
-  <div class="input-row">
+    </div>
+
     <div class="form-group">
       <label>Email</label>
-      <input formControlName="email" />
+      <input type="email" formControlName="email" />
     </div>
     <div class="form-group">
       <label>Département</label>
       <input formControlName="departement" />
     </div>
-  </div>
-
-  <div class="input-row">
     <div class="form-group">
-      <label>Rôle</label>
-      <select formControlName="role">
-        <option value="Opérateur">Opérateur</option>
+
+      <label>Catégorie</label>
+      <select formControlName="categorie">
+        <option value="Ovrier">Ovrier</option>
         <option value="Cadre">Cadre</option>
         <option value="ETAM">ETAM</option>
-        <!-- <option value="Chauffeur de navette">Chauffeur de navette</option> -->
       </select>
     </div>
-    <div class="form-group">
-      <label>   Motif du congé</label>
-      <input formControlName="motif" />
-    </div>
-  </div>
 
-  <div class="input-row">
+    <div class="form-group">
+      <label> Motif du congé</label>
+      <select formControlName="motif">
+          <option value="Décès">Décès</option>
+          <option value="Naissance">Naissance</option>
+          <option value="Circoncision">Circoncision</option>
+          <option value="Mariage">Mariage</option>
+          <option value="Congé annuel">Congé annuel</option>
+          <option value="Congé sans solde">Congé sans solde</option>
+          <option value="autres">autres</option>
+        </select>
+    </div>
+
     <div class="form-group">
       <label>Date début</label>
       <input type="date" formControlName="dateDebut" />
@@ -49,12 +57,18 @@
       <label>Date fin</label>
       <input type="date" formControlName="dateFin" />
     </div>
-  </div>
+  <div class="form-error" *ngIf="editForm.errors?.['invalidDateRange'] && editForm.touched">
+  ⚠️ La date de début ne peut pas être postérieure à la date de fin.
+</div>
 
-  <div class="input-row">
+
     <div class="form-group">
       <label>Nb Jours</label>
-      <input formControlName="nbJours" />
+      <input formControlName="nbJours" [disabled]="true"   />
+      <div *ngIf="nbJoursCalcul <= 0 && editForm.get('dateDebut')?.touched && editForm.get('dateFin')?.touched">
+         ⚠️ La période sélectionnée est invalide.
+      </div>
+
     </div>
     <div class="form-group">
       <label>Statut</label>
@@ -65,15 +79,15 @@
         <option value="Annulé">Annulé</option>
       </select>
     </div>
-  </div>
 
-  <div class="form-group">
-    <label>Commentaire</label>
-    <textarea formControlName="commentaire"></textarea>
+  <div class="form-group" *ngIf="editForm.get('motif')?.value === 'autres'">
+      <div class="form-group">
+        <label>Commentaire</label>
+        <textarea formControlName="commentaire"></textarea>
+      </div>
   </div>
-
   <div class="buttons">
-    <button type="submit" [disabled]="editForm.invalid">Enregistrer</button>
-    <button type="button" (click)="onCancel()">Annuler</button>
+    <button type="submit" [disabled]="editForm.invalid"><span class="material-symbols-outlined">done_outline</span>Enregistrer</button>
+    <button type="button" (click)="onCancel()"><span class="material-symbols-outlined">cancel</span>Annuler</button>
   </div>
 </form>

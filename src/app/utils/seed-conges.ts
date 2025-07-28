@@ -152,29 +152,15 @@ const seedData = [
 ];
 
 
-export function seedConges(congeService: CongeService) {
-  seedData.forEach(item => {
-    const newConge: Conge = {
-      nom: item.nom,
-      matricule: item.matricule,
-      email: item.email || '',
-      departement: item.departement,
-      role:'Opérateur',
-      motif: item.type,
-      dateDebut: item.dateDebut instanceof Timestamp ? item.dateDebut.toDate() : new Date(item.dateDebut),
-      dateFin: item.dateFin instanceof Timestamp ? item.dateFin.toDate() : new Date(item.dateFin),
-      nbJours: item.nbJours,
-      nbCongesPris: item.nbCongesPris ?? 0,
-      commentaire: item.commentaire || '',
-      statut: 'Approuvé' ,
-      createdAt: Timestamp.now(),
-      updatedAt: Timestamp.now()
-    };
+// export function seedConges(congeService: CongeService) {
+//   seedData.forEach(item => {
+//     // const newConge: Conge = { 'Décès'
+//     // };
 
-    congeService.addConge(newConge)
-      .then(() => console.log(`✅ Inserted: ${newConge.nom}`))
-      .catch(err => console.error(`❌ Error inserting ${newConge.nom}:`, err));
-  });
-}
+//     congeService.addConge(newConge)
+//       .then(() => console.log(`✅ Inserted: ${newConge.nom}`))
+//       .catch(err => console.error(`❌ Error inserting ${newConge.nom}:`, err));
+//   });
+//}
 
 

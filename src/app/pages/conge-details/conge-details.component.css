@@ -146,3 +146,13 @@ strong {
   max-width: 1000px;
   margin: 2rem auto;
 }
+.btn-close{
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #cf2222;
+}

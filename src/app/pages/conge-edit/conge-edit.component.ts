@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Timestamp } from 'firebase/firestore';
 import { Conge } from '../../utils/types';
 import { CongeService } from '../../services/conge.service';
@@ -17,6 +17,11 @@ export class CongeEditComponent implements OnInit {
   @Input() conge!: Conge;
   @Output() saved = new EventEmitter<Conge>();
   @Output() cancelled = new EventEmitter<void>();
+  @Output() close = new EventEmitter<void>();
+
+  onClose() {
+    this.close.emit();
+  }
 
   editForm!: FormGroup;
   nbJoursCalcul: number = 0;
@@ -25,22 +30,28 @@ export class CongeEditComponent implements OnInit {
     private fb: FormBuilder,
     private congeService: CongeService
   ) {}
-
+dateRangeValidator: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
+  const start = group.get('dateDebut')?.value;
+  const end = group.get('dateFin')?.value;
+  return (start && end && new Date(start) > new Date(end)) ? { invalidDateRange: true } : null;
+};
   ngOnInit(): void {
     // Crée le form et patch avec la conge reçue
     this.editForm = this.fb.group({
       nom: [this.conge.nom, Validators.required],
-      matricule: [this.conge.matricule, Validators.required],
+      matricule: [this.conge.matricule,  [  Validators.required,    Validators.pattern(/^\d{4}$/) ]],
       email: [this.conge.email, Validators.email],
       departement: [this.conge.departement, Validators.required],
-      role: [this.conge.role, Validators.required],
-      type: [this.conge.motif, Validators.required],
+      categorie: [this.conge.categorie, Validators.required],
+      motif: [this.conge.motif, Validators.required],
       dateDebut: [this.formatInputDate(this.conge.dateDebut), Validators.required],
       dateFin: [this.formatInputDate(this.conge.dateFin), Validators.required],
       nbJours: [{ value: this.conge.nbJours, disabled: true }, Validators.required],
       commentaire: [this.conge.commentaire],
       statut: [this.conge.statut, Validators.required]
-    });
+    },{ validators: this.dateRangeValidator });
+
+
 
     this.calculateDays();
     this.editForm.get('dateDebut')?.valueChanges.subscribe(() => this.calculateDays());
@@ -54,6 +65,8 @@ export class CongeEditComponent implements OnInit {
     const dd = date.getDate().toString().padStart(2,'0');
     return `${yyyy}-${mm}-${dd}`;
   }
+
+  
 
   calculateDays(): void {
     const debut = this.editForm.get('dateDebut')?.value;
@@ -79,7 +92,7 @@ export class CongeEditComponent implements OnInit {
       matricule: v.matricule,
       email: v.email,
       departement: v.departement,
-      role: v.role,
+      categorie: v.categorie,
       motif: v.motif,
       dateDebut: new Date(v.dateDebut),
       dateFin:   new Date(v.dateFin),
@@ -88,7 +101,7 @@ export class CongeEditComponent implements OnInit {
       statut: v.statut,
       updatedAt: Timestamp.now()
     };
-    this.congeService.updateConge(updated)
+    this.congeService.editUpdateConge(updated)
       .then(() => {
         this.saved.emit(updated);
       })

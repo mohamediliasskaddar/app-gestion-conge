@@ -57,3 +57,34 @@ button{
   background: #dc2626 !important;
   color: white !important;
 }
+@media (max-width: 768px) {
+  .header {
+    padding: 0 1rem; /* reduce padding */
+    height: 50px;     /* slightly smaller header */
+  }
+
+  .logo img {
+    height: 28px;     /* smaller logo */
+    width: 100px;
+  }
+
+  .actions {
+    gap: 0.5rem;      /* reduce gap between buttons */
+  }
+
+  .actions button {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.85rem; /* smaller buttons */
+  }
+
+  button {
+    margin-right: 0;  /* prevent excess spacing */
+  }
+
+  .bt {
+    margin: 0;
+  }
+  .logout-btn {
+    margin-right: 20px; /* align logout button */
+  }
+}

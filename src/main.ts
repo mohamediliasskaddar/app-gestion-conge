@@ -1,44 +1,4 @@
-// // main.ts
-// import { importProvidersFrom } from '@angular/core';
-// import { bootstrapApplication } from '@angular/platform-browser';
-// import { provideRouter } from '@angular/router';
 
-// // Firebase
-// import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-// import { provideFirestore, getFirestore } from '@angular/fire/firestore';
-
-// // Angular Calendar
-// import { CalendarModule, DateAdapter } from 'angular-calendar';
-// import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-
-// // Animations
-// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-// import { AppComponent } from './app/app.component';
-// import { routes } from './app/app.routes';
-// import { environment } from './environments/environment';
-
-// bootstrapApplication(AppComponent, {
-//   providers: [
-//     // Routing
-//     provideRouter(routes),
-
-//     // Firebase providers
-//     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-//     provideFirestore(() => getFirestore()),
-
-//     // Import de NgModules (animations & calendrier)
-//     importProvidersFrom(
-//       BrowserAnimationsModule,
-//       CalendarModule.forRoot({
-//         provide: DateAdapter,
-//         useFactory: adapterFactory
-//       })
-//     )
-//   ],
-// })
-// .catch(err => console.error(err));
-// main.ts
 import { importProvidersFrom } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
@@ -57,6 +17,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routes';
 import { environment } from './environments/environment';
+//auth
+import { provideAuth, getAuth } from '@angular/fire/auth';
+
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -66,6 +29,7 @@ bootstrapApplication(AppComponent, {
     // Firebase
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => getFirestore()),
+    provideAuth(() => getAuth()), 
 
     // Angular animations
     importProvidersFrom(BrowserAnimationsModule),

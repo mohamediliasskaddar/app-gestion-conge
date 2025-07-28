@@ -1,22 +1,7 @@
-<!-- <div class="ilias">
-    <app-header></app-header>
-<h2>Formulaire de demande de congé</h2>
-<h3>
-  Veuillez remplir ce formulaire en tenant compte des informations saisies avec attention.
-</h3>
-</div>
-<div class="content">
-<app-conge-form></app-conge-form>
-</div> -->
 
-
- <!-- operateurs ,  cadres , ETAM  -->
-    <app-header></app-header>
-
+  <app-header></app-header>
   <h2 class="section-title">Demande de congé</h2>
-
-<h3>  Veuillez remplir ce formulaire en tenant compte des informations saisies avec attention.  </h3>
-
+  <h3>  Veuillez remplir ce formulaire en tenant compte des informations saisies avec attention.  </h3>
   <div *ngIf="successMessage" class="success-message">
   {{ successMessage }}
 </div>
@@ -39,12 +24,15 @@
       </div>
 
       <div class="form-group">
-        <!-- <label>CNI :</label> -->
         <label>Matricule :</label>
         <input formControlName="matricule" />
         <div *ngIf="congeForm.get('matricule')?.touched && congeForm.get('matricule')?.invalid">
           CNI requis.
         </div>
+        <div *ngIf="congeForm.get('matricule')?.errors?.['pattern']">
+          Le matricule doit contenir 4 chiffres.
+        </div>
+
       </div>
     </div>
 
@@ -64,19 +52,27 @@
     </div>
 
     <div class="input-row">
-      <div class="form-group">
-        <label>Rôle :</label>
-        <select formControlName="role">
-          <option value="Opérateur">Opérateur</option>
-          <option value="Cadre">Cadre</option>
-          <option value="ETAM">ETAM</option>
-        </select>
-      </div>
+       <div class="form-group">
+      <label>Catégorie</label>
+      <select formControlName="categorie">
+        <option value="Ovrier">Ovrier</option>
+        <option value="Cadre">Cadre</option>
+        <option value="ETAM">ETAM</option>
+      </select>
+    </div>
 
-      <div class="form-group">
-        <label>Motif :</label>
-        <input formControlName="motif" placeholder="Annuel, Exceptionnel..." />
-      </div>
+     <div class="form-group">
+      <label> Motif du congé</label>
+      <select formControlName="motif">
+          <option value="Décès">Décès</option>
+          <option value="Naissance">Naissance</option>
+          <option value="Circoncision">Circoncision</option>
+          <option value="Mariage">Mariage</option>
+          <option value="Congé annuel">Congé annuel</option>
+          <option value="Congé sans solde">Congé sans solde</option>
+          <option value="autres">autres</option>
+        </select>
+    </div>
     </div>
 
     <div class="input-row">
@@ -84,12 +80,21 @@
         <label>Date Début :</label>
         <input type="date" formControlName="dateDebut" />
       </div>
+     
+
 
       <div class="form-group">
         <label>Date Fin :</label>
         <input type="date" formControlName="dateFin" />
       </div>
     </div>
+     <div class="form-error" *ngIf="congeForm.errors?.['dateDebutInPast'] && congeForm.touched">
+        ⚠️ La date de début ne peut pas être antérieure à aujourd'hui.
+     </div>
+    <div class="form-error" *ngIf="congeForm.errors?.['invalidDateRange'] && congeForm.touched">
+       ⚠️ La date de début ne peut pas être après la date de fin.
+    </div>
+
 
     <div class="input-row">
       <div class="form-group">
@@ -107,12 +112,13 @@
     </div>
 
     <!-- Commentaire full width -->
-    <div class="form-group">
-      <label>Commentaire / autres :</label>
-      <textarea formControlName="commentaire"></textarea>
-      
+     <div class="form-group" *ngIf="congeForm.get('motif')?.value === 'autres'">
+        <div class="form-group">
+          <label>Commentaire / autres :</label>
+          <textarea formControlName="commentaire"></textarea>
+          
+        </div>
     </div>
-
     <button type="submit">Enregistrer</button>
   </form>
 </div>

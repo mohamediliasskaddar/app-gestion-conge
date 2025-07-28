@@ -1,16 +1,14 @@
 
- <!-- operateurs ,  cadres , ETAM  -->
-  <h2 class="section-title">Demande de congé</h2>
 
+  <h2 class="section-title">Demande de congé</h2>
 
   <div *ngIf="successMessage" class="success-message">
   {{ successMessage }}
-</div>
+  </div>
 
-<!-- Message d'erreur -->
-<div *ngIf="errorMessage" class="error-message">
-  {{ errorMessage }}
-</div>
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
 
   <form [formGroup]="congeForm" (ngSubmit)="onSubmit()">
 
@@ -28,8 +26,12 @@
       <label>Matricule :</label>
       <input formControlName="matricule" />
       <div *ngIf="congeForm.get('matricule')?.touched && congeForm.get('matricule')?.invalid">
-        CNI requis.
+        matricule requis.
       </div>
+      <div *ngIf="congeForm.get('matricule')?.touched && congeForm.get('matricule')?.errors?.['pattern']">
+        Le matricule doit contenir exactement 4 chiffres.
+      </div>
+
     </div>
   </div>
 
@@ -52,18 +54,25 @@
   <!-- Row 3 -->
   <div class="input-row">
     <div class="form-group">
-      <label>Rôle :</label>
-      <select formControlName="role">
-        <option value="Opérateur">Opérateur</option>
+      <label>Catégorie :</label>
+      <select formControlName="categorie">
+        <option value="Ovrier">Ovrier</option>
         <option value="Cadre">Cadre</option>
         <option value="ETAM">ETAM</option>
-        <!-- <option value="Chauffeur de navette">Chauffeur de navette</option> -->
       </select>
     </div>
 
     <div class="form-group">
       <label>Motif :</label>
-      <input formControlName="motif" placeholder="Annuel, Exceptionnel..." />
+      <select formControlName="motif">
+          <option value="Décès">Décès</option>
+          <option value="Naissance">Naissance</option>
+          <option value="Circoncision">Circoncision</option>
+          <option value="Mariage">Mariage</option>
+          <option value="Congé annuel">Congé annuel</option>
+          <option value="Congé sans solde">Congé sans solde</option>
+          <option value="autres">autres</option>
+        </select>
     </div>
   </div>
 
@@ -73,12 +82,18 @@
       <label>Date Début :</label>
       <input type="date" formControlName="dateDebut" />
     </div>
+    <div class="form-error" *ngIf="congeForm.errors?.['dateDebutInPast'] && congeForm.touched">
+  ⚠️ La date de début ne peut pas être antérieure à aujourd'hui.
+</div>
 
     <div class="form-group">
       <label>Date Fin :</label>
       <input type="date" formControlName="dateFin" />
     </div>
   </div>
+<div class="form-error" *ngIf="congeForm.errors?.['invalidDateRange'] && congeForm.touched">
+  ⚠️ La date de début ne peut pas être postérieure à la date de fin.
+</div>
 
   <!-- Row 5 -->
   <div class="input-row">
@@ -93,16 +108,14 @@
         <option value="En attente">En attente</option>
         <option value="Approuvé">Approuvé</option>
         <option value="Refusé">Refusé</option>
-        <option value="Annulé">Annulé</option>
       </select>
     </div>
   </div>
 
-  <!-- Commentaire full width -->
-  <div class="form-group">
+  <!-- Commentaire full width   -->
+    <div class="form-group" *ngIf="congeForm.get('motif')?.value === 'autres'">
     <label>Commentaire / autres :</label>
     <textarea formControlName="commentaire"></textarea>
-    
   </div>
 
   <button type="submit">Enregistrer</button>

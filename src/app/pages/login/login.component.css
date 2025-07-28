@@ -16,16 +16,16 @@ body {
 .logo {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 14rem;
-  /* margin-bottom: 2rem; */
 }
 
 .logo img {
   height: 30px;
   width: auto;
-  justify-content: space-between;
-  /* gap: 2REM; */
-  /* margin:0px 100px ; */
+  display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 h2 {
@@ -100,20 +100,27 @@ button:hover {
 }
 
 @media (max-width: 480px) {
-  .login-container {
-    padding: 1rem;
-  }
   
+   
   .logo {
-    gap: 1rem;
+    gap: 0.3rem;
   }
   
   .logo img {
-    height: 45px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
   }
+
+  /* .hutch {
+   margin-right: 75px;
+  } */
   
   form {
-    padding: 2rem;
+    width: 100%;
+    max-width: 90%;
   }
   
   h2 {

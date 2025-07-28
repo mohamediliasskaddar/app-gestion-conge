@@ -7,6 +7,7 @@ import { CongeDetailsComponent } from "../conge-details/conge-details.component"
 import { CongeEditComponent } from "../conge-edit/conge-edit.component";
 import * as XLSX from 'xlsx';
 import { saveAs} from 'file-saver';
+import { AuthService } from '../../services/auth.service';
 // import { saveAs } from 'file-saver';
 
 @Component({
@@ -24,26 +25,31 @@ export class CongeTableComponent implements OnInit {
   loading = true;
   errorMsg = '';
 
-  roles = ['Opérateur', 'Cadre', 'ENAM'];
-  statuts = ['En attente', 'Approuvé', 'Refusé', 'Annulé'];
+  roles = ['Ovrier', 'Cadre', 'ENAM'];
+  statuts = ['En attente', 'Approuvé', 'Refusé'];
   selectedRole = '';
   selectedStatut = '';
-
+  userRole: string | null = null;
   
   selectedConge?: Conge;
   editingConge?: Conge;
 
-  constructor(private congeService: CongeService) {}
+  constructor(private congeService: CongeService, private authService: AuthService) {}
 
   ngOnInit(): void {
+    this.authService.role$.subscribe(role => this.userRole = role);
     this.congeService.getConges().subscribe({
       next: (data) => {
-        
+       
         this.conges = data.map(c => ({
-          ...c,
-          dateDebut: c.dateDebut instanceof Timestamp ? c.dateDebut.toDate() : c.dateDebut,
-          dateFin:   c.dateFin   instanceof Timestamp ? c.dateFin.toDate()   : c.dateFin
-        }));
+            ...c,
+            dateDebut: c.dateDebut instanceof Timestamp ? c.dateDebut.toDate() : c.dateDebut,
+            dateFin:   c.dateFin   instanceof Timestamp ? c.dateFin.toDate()   : c.dateFin,
+            createdAt: c.createdAt instanceof Timestamp ? c.createdAt.toDate() : c.createdAt
+          })).sort((a, b) => {
+            return b.createdAt.getTime() - a.createdAt.getTime();  // Trie du plus récent au plus ancien
+          });
+
         this.applyFilters();
         this.loading = false;
       },
@@ -57,7 +63,7 @@ export class CongeTableComponent implements OnInit {
   
   applyFilters() {
     this.filteredConges = this.conges.filter(c => {
-      const byRole   = this.selectedRole   ? c.role   === this.selectedRole   : true;
+      const byRole   = this.selectedRole   ? c.categorie   === this.selectedRole   : true;
       const byStatut = this.selectedStatut ? c.statut === this.selectedStatut : true;
       return byRole && byStatut;
     });
@@ -75,6 +81,8 @@ export class CongeTableComponent implements OnInit {
   onViewDetails(c: Conge) { this.selectedConge = c; }
   onCloseDetails()      { this.selectedConge = undefined; }
   onEdit(c: Conge)      { this.editingConge = c; }
+  onCloseEdit() {  this.editingConge = undefined; }
+
   onSaved(u: Conge)     { this.editingConge = undefined; this.applyFilters(); }
   onDelete(id?: string) {
     if (!id || !confirm('Confirmer la suppression ?')) return;
@@ -82,19 +90,37 @@ export class CongeTableComponent implements OnInit {
       .then(() => this.applyFilters())
       .catch(e => alert('Erreur suppression'));
   }
-  // exportExcel(){
-  //   alert( "not implemented yet" )
-  // }
+  onCancelEdit() {
+  this.editingConge = undefined;
+}
+  //toggeling part rh and dir 
+  onToggleRH(c: Conge): void {
+  if (this.userRole !== 'RH') return;
+  const updated = { ...c, approuveParRH: !c.approuveParRH };
+  this.congeService.updateConge(c.id!, updated).then(this.applyFilters.bind(this));
+}
+
+onToggleDirecteur(c: Conge): void {
+  if (this.userRole !== 'Directeur') return;
+  const updated = { ...c, approuveParDirecteur: !c.approuveParDirecteur };
+  if (updated.approuveParDirecteur) {
+    updated.statut = 'Approuvé';
+   } else { 
+    updated.statut = 'En attente'; // <-- ou autre statut par défaut
+  }
+  this.congeService.updateConge(c.id!, updated).then(this.applyFilters.bind(this));
+}
+
+
+
 
 
   exportExcel(): void {
-    
-    // 1. Préparer les données à exporter
     const data = this.filteredConges.map(c => ({
       Nom: c.nom,
       Matricule: c.matricule,
       Département: c.departement,
-      Rôle: c.role,
+      Rôle: c.categorie,
       Motif: c.motif,
       'Date début': new Date(c.dateDebut).toLocaleDateString(),
       'Date fin':   new Date(c.dateFin).toLocaleDateString(),

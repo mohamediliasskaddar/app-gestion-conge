@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 
    <h2 class="section-title">Tableau des demandes de congé</h2>
 <div class="filters">
@@ -30,7 +31,7 @@
   <thead>
     <tr>
       <th>Nom</th><th>Matricule</th><th>Département</th><th>Rôle</th>
-      <th>Motif</th><th>Période</th><th>Jours</th><th>Statut</th><th>Actions</th>
+      <th>Motif</th><th>Période</th><th>Jours</th><th>Statut</th><th>approuve RH</th> <th>approuve Directeur</th><th>Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -38,24 +39,66 @@
       <td>{{ c.nom }}</td>
       <td>{{ c.matricule }}</td>
       <td>{{ c.departement }}</td>
-      <td>{{ c.role }}</td>
+      <td>{{ c.categorie }}</td>
       <td>{{ c.motif }}</td>
       <td>{{ c.dateDebut | date:'yyyy-MM-dd' }} → {{ c.dateFin | date:'yyyy-MM-dd' }}</td>
       <td>{{ c.nbJours }}</td>
       <td>{{ c.statut }}</td>
+      <!-- <td>
+        <input type="checkbox" disabled [checked]="c.approuveParRH">
+      </td>
       <td>
-        <button (click)="onViewDetails(c)">Détails</button>
-        <button (click)="onEdit(c)">Modifier</button>
-        <button (click)="onDelete(c.id)">Supprimer</button>
+        <input type="checkbox" disabled [checked]="c.approuveParDirecteur">
+      </td> -->
+      <td>
+  <input
+    type="checkbox"
+    [checked]="c.approuveParRH"
+    [disabled]="userRole !== 'RH'"
+    (change)="onToggleRH(c)" />
+</td>
+<td>
+  <input
+    type="checkbox"
+    [checked]="c.approuveParDirecteur"
+    [disabled]="userRole !== 'Directeur'"
+    (change)="onToggleDirecteur(c)" />
+</td>
+      
+      <td>
+        <button (click)="onViewDetails(c)"><span class="material-symbols-outlined">chat_info</span></button>
+        <button (click)="onEdit(c)"><span class="material-symbols-outlined">border_color</span></button>
+        <button (click)="onDelete(c.id)"><span class="material-symbols-outlined">delete</span></button>
       </td>
     </tr>
   </tbody>
 </table>
 
 <!-- Détails et édition -->
-<app-conge-details *ngIf="selectedConge" [conge]="selectedConge" (close)="onCloseDetails()"></app-conge-details>
-<app-conge-edit    *ngIf="editingConge" [conge]="editingConge" (saved)="onSaved($event)" (cancelled)="editingConge = undefined"></app-conge-edit>
+<!-- <app-conge-details *ngIf="selectedConge" [conge]="selectedConge" (close)="onCloseDetails()"></app-conge-details>
+<app-conge-edit    *ngIf="editingConge" [conge]="editingConge" (saved)="onSaved($event)" (cancelled)="editingConge = undefined"></app-conge-edit> -->
 
+<!-- Modale Détails -->
+<div class="modal-overlay" *ngIf="selectedConge">
+  <div class="modal">
+    <app-conge-details 
+      [conge]="selectedConge" 
+      (close)="onCloseDetails()">
+    </app-conge-details>
+  </div>
+</div>
+
+<!-- Modale Édition -->
+<div class="modal-overlay" *ngIf="editingConge">
+  <div class="modal">
+    <app-conge-edit 
+      [conge]="editingConge" 
+      (saved)="onSaved($event)" 
+      (cancelled)="onCloseEdit()" 
+      (close)="onCloseEdit()">
+    </app-conge-edit>
+  </div>
+</div>
 
 
 

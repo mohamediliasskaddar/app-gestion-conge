@@ -1,59 +1,91 @@
+
 import { Injectable } from '@angular/core';
-import {
-  collection,
-  Firestore,
-  getDocs,
-  query,
-  where
-} from '@angular/fire/firestore';
+import { Auth, signInWithEmailAndPassword, signOut, User, onAuthStateChanged } from '@angular/fire/auth';
+import { Firestore, doc, getDoc } from '@angular/fire/firestore';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root',
+})
 export class AuthService {
-  private _user: any = null;
+ 
+  private userSubject = new BehaviorSubject<User | null>(null);
+  private roleSubject = new BehaviorSubject<string | null>(null);
+  private userData: any = null; 
+ 
 
-  constructor(private firestore: Firestore) {}
+  constructor(  private auth: Auth, private firestore: Firestore, private router: Router ) {
 
-  /**
-   * Tente de connecter un RH en comparant email et mot de passe.
-   */
+    onAuthStateChanged(this.auth, async (user) => {
+      this.userSubject.next(user);
+      if (user) {
+        await this.loadUserData(user.uid); 
+      } else {
+        this.userData = null;
+        this.roleSubject.next(null);
+      }
+    });
+  }
+
   async login(email: string, password: string): Promise<boolean> {
-    const usersCol = collection(this.firestore, 'Users');
-    // On cherche l'utilisateur dont 'email' et 'password' correspondent
-    const q = query(
-      usersCol,
-      where('email', '==', email),
-      where('password', '==', password)
-    );
-    const snap = await getDocs(q);
-    if (!snap.empty) {
-      // Récupère le premier document correspondant
-      this._user = { id: snap.docs[0].id, ...(snap.docs[0].data() as any) };
-      localStorage.setItem('rhUser', JSON.stringify(this._user));
+    try {
+      const userCred = await signInWithEmailAndPassword(this.auth, email, password);
+      const user = userCred.user;
+      await this.loadUserData(user.uid);
       return true;
+    } catch (error) {
+      console.error('Erreur de connexion :', error);
+      return false;
     }
-    return false;
   }
 
-  logout() {
-    this._user = null;
-    localStorage.removeItem('rhUser');
+  async logout() {
+    await signOut(this.auth);
+    this.userSubject.next(null);
+    this.roleSubject.next(null);
+    this.userData = null;
+    this.router.navigate(['/login']);
   }
 
-  /**
-   * Donne l'utilisateur actuellement connecté (ou null).
-   */
-  get currentUser() {
-    if (!this._user) {
-      const stored = localStorage.getItem('rhUser');
-      this._user = stored ? JSON.parse(stored) : null;
+  /** Charge les données Firestore de l'utilisateur connecté */
+  private async loadUserData(uid: string) {
+    // console.log('🔍 Tentative de récupération Firestore pour UID :', uid);
+    const userDocRef = doc(this.firestore, `Users/${uid}`);
+    const userSnap = await getDoc(userDocRef);
+    if (userSnap.exists()) {
+      this.userData = userSnap.data();
+      const role = this.userData.role || null;
+      this.roleSubject.next(role);
+      // console.log('Données utilisateur Firestore :', this.userData);
+    } else {
+      console.warn('Aucune donnée utilisateur trouvée dans Firestore');
+      this.userData = null;
+      this.roleSubject.next(null);
     }
-    return this._user;
   }
 
-  /**
-   * Indique si un utilisateur est connecté.
-   */
+  get user$() {
+    return this.userSubject.asObservable();
+  }
+
+  get role$() {
+    return this.roleSubject.asObservable();
+  }
+
+  get uid(): string | null {
+    return this.auth.currentUser?.uid || null;
+  }
+
   isLoggedIn(): boolean {
-    return !!this.currentUser;
+    return !!this.auth.currentUser;
+  }
+
+  getRole(): string | null {
+    return this.roleSubject.value;
+  }
+
+  getUserData(): any {
+    return this.userData;
   }
 }
