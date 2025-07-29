@@ -3,7 +3,7 @@
    <h2 class="section-title">Tableau des demandes de congé</h2>
 <div class="filters">
   <label>
-    Rôle :
+    Catégorie :
     <select (change)="onRoleChange($any($event.target).value)">
       <option value="">Tous</option>
       <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
@@ -31,7 +31,7 @@
   <thead>
     <tr>
       <th>Nom</th><th>Matricule</th><th>Département</th><th>Rôle</th>
-      <th>Motif</th><th>Période</th><th>Jours</th><th>Statut</th><th>approuve RH</th> <th>approuve Directeur</th><th>Actions</th>
+      <th>Motif</th><th>Période</th><th>Jours</th><th>Statut</th><th>approbation RH</th> <th>approbation   Directeur</th><th>Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -44,12 +44,7 @@
       <td>{{ c.dateDebut | date:'yyyy-MM-dd' }} → {{ c.dateFin | date:'yyyy-MM-dd' }}</td>
       <td>{{ c.nbJours }}</td>
       <td>{{ c.statut }}</td>
-      <!-- <td>
-        <input type="checkbox" disabled [checked]="c.approuveParRH">
-      </td>
-      <td>
-        <input type="checkbox" disabled [checked]="c.approuveParDirecteur">
-      </td> -->
+      
       <td>
   <input
     type="checkbox"

@@ -25,7 +25,7 @@ export class CongeTableComponent implements OnInit {
   loading = true;
   errorMsg = '';
 
-  roles = ['Ovrier', 'Cadre', 'ENAM'];
+  roles = ['Ovrier', 'Cadre', 'ETAM'];
   statuts = ['En attente', 'Approuvé', 'Refusé'];
   selectedRole = '';
   selectedStatut = '';

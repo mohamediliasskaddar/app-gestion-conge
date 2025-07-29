@@ -71,17 +71,26 @@ dateDebutNotInPastValidator: ValidatorFn = (group: AbstractControl): ValidationE
 
 
 
-  calculateDays(): void {
-    const debut = this.congeForm.get('dateDebut')?.value;
-    const fin = this.congeForm.get('dateFin')?.value;
-    if (debut && fin) {
-      const diff = (new Date(fin).getTime() - new Date(debut).getTime());
-      this.nbJoursCalcul = Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
-      if (this.nbJoursCalcul > 0) {
-        this.congeForm.get('nbJours')?.setValue(this.nbJoursCalcul);
+   calculateDays(): void {
+  const debut = this.congeForm.get('dateDebut')?.value;
+  const fin = this.congeForm.get('dateFin')?.value;
+
+  if (debut && fin) {
+    const start = new Date(debut);
+    const end = new Date(fin);
+    let dayCount = 0;
+    // On compte les jours ouvrés (du lundi au vendredi)
+    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+      const dayOfWeek = d.getDay(); // 0 = Sunday, 6 = Saturday
+      if (dayOfWeek !== 0 && dayOfWeek !== 6 ) { 
+        dayCount++;
       }
     }
+
+    this.nbJoursCalcul = dayCount;
+    this.congeForm.get('nbJours')?.setValue(this.nbJoursCalcul);
   }
+}
 
   onSubmit(): void {
   if (this.congeForm.invalid) {
@@ -105,7 +114,7 @@ dateDebutNotInPastValidator: ValidatorFn = (group: AbstractControl): ValidationE
       matricule: formValue.matricule,
       email: formValue.email,
       departement: formValue.departement,
-      categorie: formValue.role,
+      categorie: formValue.categorie,
       motif: formValue.motif,
       dateDebut: new Date(formValue.dateDebut),
       dateFin: new Date(formValue.dateFin),
