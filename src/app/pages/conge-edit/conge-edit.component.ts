@@ -83,7 +83,6 @@ dateRangeValidator: ValidatorFn = (group: AbstractControl): ValidationErrors | n
           dayCount++;
         }
       }
-
       this.nbJoursCalcul = dayCount;
       this.editForm.get('nbJours')?.setValue(this.nbJoursCalcul);
     }

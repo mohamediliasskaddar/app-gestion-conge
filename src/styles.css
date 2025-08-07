@@ -55,20 +55,7 @@ body {
 }
 
 
-/* mobile responsive */
-/* .hamburger {
-   margin-top: 100px; 
-  display: none;
-  font-size: 28px;
-  padding: 8px;
-  background: none;
-  border: none;
-  color: #333;
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  z-index: 1001;
-} */
+
 @media (max-width: 768px) {
   
 }

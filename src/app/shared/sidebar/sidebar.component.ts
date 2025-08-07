@@ -15,19 +15,21 @@ export class SidebarComponent implements OnInit {
     selectedSection: string = '';
     role: string | null = null;
      isOpen = false; // pour mobile
-     ngOnInit(): void {
+
+
+  ngOnInit(): void {
        this.authService.role$.subscribe(role => {
       this.role = role;
     });
-     }
+  }
 
-      toggleSidebar() {
+  toggleSidebar() {
     this.isOpen = !this.isOpen;
   }
 
 
 
-   select(section: string) {
+  select(section: string) {
     this.selectedSection = section; 
     this.sectionSelected.emit(section);
   }

@@ -17,12 +17,12 @@
    [class.active]="isActive('/dashboard/conge-table')">Tableau des demandes
   </button>
   <button
-   *ngIf="role === 'RH' || role === 'Directeur' || role === 'IT'" 
+   *ngIf="role === 'RH' || role === 'Directeur' " 
    (click)="navigate('/dashboard/conge-details')" 
    [class.active]="isActive('/dashboard/conge-details')">Détails des demandes 
   </button>
   <button
-   *ngIf="role === 'RH' || role === 'Directeur'||  role === 'IT'" 
+   *ngIf="role === 'RH' || role === 'Directeur'" 
    (click)="navigate('/dashboard/conge-calendar')" 
    [class.active]="isActive('/dashboard/conge-calendar')">Calendriers des demandes
   </button>

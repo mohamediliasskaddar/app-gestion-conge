@@ -12,7 +12,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  email = '';      // on passe du username à email
+  email = '';  
   password = '';
   errorMessage = '';
 

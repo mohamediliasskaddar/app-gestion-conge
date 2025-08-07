@@ -70,36 +70,27 @@
       this.roleSub?.unsubscribe();
     }
 
-    // calculateDays(): void {
-    //   const debut = this.congeForm.get('dateDebut')?.value;
-    //   const fin = this.congeForm.get('dateFin')?.value;
-
-    //   if (debut && fin) {
-    //     const diff = new Date(fin).getTime() - new Date(debut).getTime();
-    //     const days = Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
-    //     this.nbJoursCalcul = days > 0 ? days : 0;
-    //     this.congeForm.get('nbJours')?.setValue(this.nbJoursCalcul);
-    //   }
-    // }
+   
     calculateDays(): void {
-  const debut = this.congeForm.get('dateDebut')?.value;
-  const fin = this.congeForm.get('dateFin')?.value;
+    const debut = this.congeForm.get('dateDebut')?.value;
+    const fin = this.congeForm.get('dateFin')?.value;
 
-  if (debut && fin) {
-    const start = new Date(debut);
-    const end = new Date(fin);
-    let dayCount = 0;
-    // On compte les jours ouvrés (du lundi au vendredi)
-    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-      const dayOfWeek = d.getDay(); // 0 = Sunday, 6 = Saturday
-      if (dayOfWeek !== 0 && dayOfWeek !== 6 ) { 
-        dayCount++;
+    if (debut && fin) {
+      const start = new Date(debut);
+      const end = new Date(fin);
+      let dayCount = 0;
+      // On compte les jours ouvrés (du lundi au vendredi)
+      for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+        const dayOfWeek = d.getDay(); // 0 = Sunday, 6 = Saturday
+        if (dayOfWeek !== 0 && dayOfWeek !== 6 ) { 
+        // if (dayOfWeek !== 0 ) { 
+          dayCount++;
+        }
       }
-    }
 
-    this.nbJoursCalcul = dayCount;
-    this.congeForm.get('nbJours')?.setValue(this.nbJoursCalcul);
-  }
+      this.nbJoursCalcul = dayCount;
+      this.congeForm.get('nbJours')?.setValue(this.nbJoursCalcul);
+    }
 }
 
 
