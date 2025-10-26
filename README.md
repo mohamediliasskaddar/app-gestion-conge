@@ -1,59 +1,146 @@
-# AppGestionConge
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.9.
+---
 
-## Development server
+# 🏖️ Application de Gestion de Congés
 
-To start a local development server, run:
+## 📋 Description du projet
 
-```bash
-ng serve
-```
+L’**Application de Gestion de Congés** est une application web interne visant à **simplifier et automatiser la gestion des congés** au sein de l’entreprise.
+Elle permet aux employés de soumettre leurs demandes en ligne, aux responsables RH et au Directeur de les valider selon un **workflow à double niveau**, et à l’équipe IT d’assurer la gestion des utilisateurs et la maintenance du système.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+👉 [Figma – Maquette de l’application](https://www.figma.com/design/CtHXxsIxeyXP5PyB9WNRT0/app-gestion-de-cong%C3%A9?node-id=0-1&t=JkVtvXshqZAwWyUT-1)
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🚀 Fonctionnalités principales
 
-```bash
-ng generate component component-name
-```
+### 🗓️ Gestion des congés
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+* Soumission de demandes via un **formulaire interactif**.
+* Workflow de **validation multi-niveaux** (Employé → RH → Directeur).
+* Interface adaptée selon le rôle de l’utilisateur.
+  **🎯 Objectif :** Simplifier et structurer la gestion des congés grâce à une validation automatisée.
 
-```bash
-ng generate --help
-```
+---
 
-## Building
+### 🔔 Notifications et alertes
 
-To build the project run:
+* **Envoi automatique d’e-mails** à chaque étape (soumission, approbation, refus).
+* **Suivi en temps réel** de l’état des demandes.
+  **🎯 Objectif :** Informer les utilisateurs sans intervention manuelle.
 
-```bash
-ng build
-```
+---
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### 📊 Tableaux de bord et visualisation
 
-## Running unit tests
+* **Dashboards dynamiques** pour RH et Directeur.
+* **Calendrier centralisé** affichant les congés approuvés et absences en cours.
+  **🎯 Objectif :** Offrir une visibilité claire pour une meilleure organisation des équipes.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+---
 
-```bash
-ng test
-```
+### 👥 Gestion des utilisateurs
 
-## Running end-to-end tests
+* Interface dédiée au rôle **IT** pour la création, modification et suppression de comptes.
+* Formulaire d’ajout de nouveaux utilisateurs avec rôle et département.
+  **🎯 Objectif :** Centraliser et sécuriser la gestion des utilisateurs.
 
-For end-to-end (e2e) testing, run:
+---
 
-```bash
-ng e2e
-```
+### 📄 Exports et rapports
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+* **Export PDF** des demandes approuvées.
+* **Export Excel (XLSX)** avec filtres (date, statut, utilisateur).
+  **🎯 Objectif :** Faciliter l’archivage, l’analyse et le reporting des données RH.
 
-## Additional Resources
+---
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### 📱 Accessibilité et expérience utilisateur
+
+* **Interface responsive** (ordinateurs, tablettes, mobiles).
+* **Navigation fluide et intuitive** adaptée à tous les rôles.
+  **🎯 Objectif :** Offrir une expérience utilisateur agréable et cohérente.
+
+---
+
+## 🧩 Stack technique
+
+| Catégorie           | Technologie / Librairie                                      | Description                                                                                  |
+| ------------------- | ------------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
+| **Frontend**        | [Angular 19 (Standalone Components)](https://angular.dev)    | Framework moderne pour le développement web SPA. Simplifie l’architecture et la maintenance. |
+| **Backend / Cloud** | [Firebase Firestore + Auth](https://firebase.google.com/)    | Base de données NoSQL en temps réel et authentification sécurisée.                           |
+| **Déploiement**     | [Firebase Hosting](https://firebase.google.com/docs/hosting) | Hébergement rapide et sécurisé avec HTTPS automatique.                                       |
+| **Emailing**        | [EmailJS](https://www.emailjs.com/)                          | Envoi d’e-mails sans serveur.                                                                |
+| **PDF Export**      | [jsPDF](https://github.com/parallax/jsPDF)                   | Génération de documents PDF à partir des données de congés.                                  |
+| **XLSX Export**     | [SheetJS (xlsx)](https://sheetjs.com/)                       | Exportation des données RH au format Excel.                                                  |
+
+---
+
+## ⚙️ Fonctionnement technique
+
+### 🔥 Firebase Firestore
+
+* Base de données **NoSQL temps réel** pour synchroniser automatiquement les demandes entre les rôles.
+* Modèle flexible et évolutif.
+* Haute disponibilité et scalabilité sans gestion serveur.
+
+### 🌐 Firebase Hosting
+
+* Hébergement sécurisé, rapide et optimisé pour les applications Angular SPA.
+* HTTPS automatique et support du **routing Angular** via `firebase.json`.
+
+### 🅰️ Angular (Standalone Components)
+
+* Architecture légère sans `NgModules`.
+* Routing, guards et services pour une **séparation claire des rôles (IT, RH, Directeur)**.
+* Formulaires réactifs et intégration fluide avec Firebase.
+
+---
+
+## 🧪 Tests et déploiement
+
+Le déploiement s’effectue via **Firebase Hosting**, offrant :
+
+* Configuration et **mise en ligne en une commande**.
+* Prise en charge du **SSR (Server-Side Rendering)** avec Node.js pour de meilleures performances.
+* Gestion automatique du **HTTPS**, du **routing Angular**, et de la **mise en cache** des fichiers statiques.
+
+### ⚙️ Étapes de déploiement :
+
+1. Installer Firebase CLI :
+
+   ```bash
+   npm install -g firebase-tools
+   ```
+2. Se connecter à Firebase :
+
+   ```bash
+   firebase login
+   ```
+3. Initialiser le projet :
+
+   ```bash
+   firebase init
+   ```
+4. Builder et déployer l’application Angular :
+
+   ```bash
+   ng build
+   firebase deploy
+   ```
+
+---
+
+## 👨‍💻 Auteur
+
+**Mohamed Iliass Kaddar**
+📧 [moahmediliassk@gmail.com](mailto:moahmediliassk@gmail.com)
+
+---
+
+## 🖼️ Aperçu
+
+Pour un aperçu visuel de l’interface :
+👉 [Voir sur Figma](https://www.figma.com/design/CtHXxsIxeyXP5PyB9WNRT0/app-gestion-de-cong%C3%A9?node-id=0-1&t=JkVtvXshqZAwWyUT-1)
+
+---
